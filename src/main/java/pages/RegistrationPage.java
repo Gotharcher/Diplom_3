@@ -1,16 +1,10 @@
 package pages;
 
 import model.User;
-import org.hamcrest.MatcherAssert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-
-import java.awt.event.KeyEvent;
-import java.security.Key;
-
-import static org.hamcrest.Matchers.startsWith;
 
 public class RegistrationPage {
     private final By nameInput = By.xpath(".//label[text()='Имя']/..//input");

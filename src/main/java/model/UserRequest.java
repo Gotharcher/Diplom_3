@@ -1,7 +1,6 @@
 package model;
 
 import env.Constants;
-import io.restassured.RestAssured;
 import io.restassured.response.Response;
 
 
