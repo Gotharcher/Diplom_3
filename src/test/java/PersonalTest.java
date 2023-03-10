@@ -17,19 +17,19 @@ import pages.PersonalPage;
 
 import java.util.concurrent.TimeUnit;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 @RunWith(Parameterized.class)
 public class PersonalTest {
 
+    public static String accessToken, refreshToken;
+    public static User user;
+    private final String browserName;
     public WebDriver driver;
     public PersonalPage personalPage;
     public MainPage mainPage;
-    public static String accessToken, refreshToken;
-    public static User user;
     public LoginPage loginPage;
-
-    private final String browserName;
 
     public PersonalTest(String browserName) {
         this.browserName = browserName;
@@ -44,7 +44,7 @@ public class PersonalTest {
     }
 
     @BeforeClass
-    public static void beforeClass(){
+    public static void beforeClass() {
         RestAssured.baseURI = Constants.SITE_ADDRESS;
         user = User.createRandomUser();
         Response response = UserRequest.createUser(user);
@@ -52,10 +52,15 @@ public class PersonalTest {
         refreshToken = response.path("refreshToken");
     }
 
+    @AfterClass
+    public static void afterClass() {
+        UserRequest.deleteUser(accessToken);
+    }
+
     @Before
-    public void setUp(){
+    public void setUp() {
         WebDriverManager.chromedriver().setup();
-        if(browserName.equals("yandex")){
+        if (browserName.equals("yandex")) {
             System.setProperty("webdriver.chrome.driver", Constants.YABROWSER_PATH);
         }
         driver = new ChromeDriver();
@@ -64,56 +69,51 @@ public class PersonalTest {
         personalPage = new PersonalPage(driver);
         loginPage = new LoginPage(driver);
         driver.get(Constants.SITE_ADDRESS);
-        LocalStorage localStorage = ((WebStorage)driver).getLocalStorage();
+        LocalStorage localStorage = ((WebStorage) driver).getLocalStorage();
         localStorage.setItem("accessToken", accessToken);
         localStorage.setItem("refreshToken", refreshToken);
     }
 
     @Test
-    public void checkPersonalExitButton(){
-        driver.get(Constants.SITE_ADDRESS+"/account");
+    public void checkPersonalExitButton() {
+        driver.get(Constants.SITE_ADDRESS + "/account");
         personalPage.waitLoading();
         personalPage.clickExitButton();
         loginPage.waitLoading();
-        LocalStorage localStorage = ((WebStorage)driver).getLocalStorage();
+        LocalStorage localStorage = ((WebStorage) driver).getLocalStorage();
         assertNull("Access-токен очистился", localStorage.getItem("accessToken"));
-        assertEquals("Оказались на странице логина после выхода", Constants.SITE_ADDRESS+Constants.LOGIN_URL, driver.getCurrentUrl());
+        assertEquals("Оказались на странице логина после выхода", Constants.SITE_ADDRESS + Constants.LOGIN_URL, driver.getCurrentUrl());
     }
 
     @Test
-    public void checkFromPersonaToMainViaLogoPassage(){
-        driver.get(Constants.SITE_ADDRESS+"/account");
+    public void checkFromPersonaToMainViaLogoPassage() {
+        driver.get(Constants.SITE_ADDRESS + "/account");
         personalPage.waitLoading();
         personalPage.clickLogo();
         mainPage.waitLoading();
-        assertEquals("Оказались на главной странице после Лого", Constants.SITE_ADDRESS+"/", driver.getCurrentUrl());
+        assertEquals("Оказались на главной странице после Лого", Constants.SITE_ADDRESS + "/", driver.getCurrentUrl());
     }
 
     @Test
-    public void checkFromPersonaToMainViaConstructorPassage(){
-        driver.get(Constants.SITE_ADDRESS+"/account");
+    public void checkFromPersonaToMainViaConstructorPassage() {
+        driver.get(Constants.SITE_ADDRESS + "/account");
         personalPage.waitLoading();
         personalPage.clickConstructor();
         mainPage.waitLoading();
-        assertEquals("Оказались на главной странице после Конструктора", Constants.SITE_ADDRESS+"/", driver.getCurrentUrl());
+        assertEquals("Оказались на главной странице после Конструктора", Constants.SITE_ADDRESS + "/", driver.getCurrentUrl());
     }
 
     @Test
-    public void checkFromMainToPersonalPassage(){
+    public void checkFromMainToPersonalPassage() {
         mainPage.waitLoading();
         mainPage.clickPersonalText();
         personalPage.waitLoading();
-        assertEquals("Оказались в личном кабинете после главной страницы", Constants.SITE_ADDRESS+Constants.PERSONAL, driver.getCurrentUrl());
+        assertEquals("Оказались в личном кабинете после главной страницы", Constants.SITE_ADDRESS + Constants.PERSONAL, driver.getCurrentUrl());
     }
 
     @After
-    public void tearDown(){
+    public void tearDown() {
         System.out.println(driver.manage().getCookies());
         driver.quit();
-    }
-
-    @AfterClass
-    public static void afterClass() {
-        UserRequest.deleteUser(accessToken);
     }
 }

@@ -16,18 +16,17 @@ import pages.RestorePasswordPage;
 
 import java.util.concurrent.TimeUnit;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(Parameterized.class)
 public class LoginTest {
 
+    public static String accessToken;
+    public static User user;
+    private final String browserName;
     public WebDriver driver;
     public LoginPage loginPage;
     public MainPage mainPage;
-    public static String accessToken;
-    public static User user;
-
-    private final String browserName;
 
     public LoginTest(String browserName) {
         this.browserName = browserName;
@@ -42,16 +41,21 @@ public class LoginTest {
     }
 
     @BeforeClass
-    public static void beforeClass(){
+    public static void beforeClass() {
         RestAssured.baseURI = Constants.SITE_ADDRESS;
         user = User.createRandomUser();
         accessToken = UserRequest.createUser(user).path("accessToken");
     }
 
+    @AfterClass
+    public static void afterClass() {
+        UserRequest.deleteUser(accessToken);
+    }
+
     @Before
-    public void setUp(){
+    public void setUp() {
         WebDriverManager.chromedriver().setup();
-        if(browserName.equals("yandex")){
+        if (browserName.equals("yandex")) {
             System.setProperty("webdriver.chrome.driver", Constants.YABROWSER_PATH);
         }
         driver = new ChromeDriver();
@@ -61,13 +65,13 @@ public class LoginTest {
     }
 
     @Test
-    public void checkLoginFromLoginPage(){
-        driver.get(Constants.SITE_ADDRESS+Constants.LOGIN_URL);
+    public void checkLoginFromLoginPage() {
+        driver.get(Constants.SITE_ADDRESS + Constants.LOGIN_URL);
         checks();
     }
 
     @Test
-    public void checkLoginFromMainPagePersonal(){
+    public void checkLoginFromMainPagePersonal() {
         driver.get(Constants.SITE_ADDRESS);
         mainPage.waitLoading();
         mainPage.clickPersonalText();
@@ -75,7 +79,7 @@ public class LoginTest {
     }
 
     @Test
-    public void checkLoginFromMainPageEnterAccount(){
+    public void checkLoginFromMainPageEnterAccount() {
         driver.get(Constants.SITE_ADDRESS);
         mainPage.waitLoading();
         mainPage.clickEnterAccount();
@@ -83,46 +87,41 @@ public class LoginTest {
     }
 
     @Test
-    public void checkLoginFromRegistrationHyperlink(){
-        driver.get(Constants.SITE_ADDRESS+Constants.REGISTER_URL);
+    public void checkLoginFromRegistrationHyperlink() {
+        driver.get(Constants.SITE_ADDRESS + Constants.REGISTER_URL);
         RegistrationPage registrationPage = new RegistrationPage(driver);
         registrationPage.clickSingInHyperlink();
         checks();
     }
 
     @Test
-    public void checkLoginFromForgotPasswordHyperlink(){
-        driver.get(Constants.SITE_ADDRESS+Constants.FORGOT_URL);
+    public void checkLoginFromForgotPasswordHyperlink() {
+        driver.get(Constants.SITE_ADDRESS + Constants.FORGOT_URL);
         RestorePasswordPage restorePasswordPage = new RestorePasswordPage(driver);
         restorePasswordPage.clickSingInHyperlink();
         checks();
     }
 
-    public void checks(){
+    public void checks() {
         assertTrue("Зашли на страницу логина", pageURLIsLoginPage());
         loginPage.enterCredsAndClickLogin(user);
         assertTrue(loadedPageAfterSuccessfulLogin());
     }
 
     @Step("We are at Login page")
-    public boolean pageURLIsLoginPage(){
+    public boolean pageURLIsLoginPage() {
         loginPage.waitLoading();
-        return driver.getCurrentUrl().equals(Constants.SITE_ADDRESS+Constants.LOGIN_URL);
+        return driver.getCurrentUrl().equals(Constants.SITE_ADDRESS + Constants.LOGIN_URL);
     }
 
     @Step("After login, we have to be redirected to main page and button Create Order is present")
-    public boolean loadedPageAfterSuccessfulLogin(){
+    public boolean loadedPageAfterSuccessfulLogin() {
         mainPage.waitLoading();
         return mainPage.createOrderDispalyed();
     }
 
     @After
-    public void tearDown(){
+    public void tearDown() {
         driver.quit();
-    }
-
-    @AfterClass
-    public static void afterClass() {
-        UserRequest.deleteUser(accessToken);
     }
 }

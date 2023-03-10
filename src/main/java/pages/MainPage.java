@@ -17,7 +17,7 @@ public class MainPage {
 
     private WebDriver driver;
 
-    public MainPage(WebDriver driver){
+    public MainPage(WebDriver driver) {
         this.driver = driver;
     }
 
@@ -26,39 +26,39 @@ public class MainPage {
                 .until(ExpectedConditions.visibilityOfElementLocated(titleMainPage));
     }
 
-    public boolean createOrderDispalyed(){
+    public boolean createOrderDispalyed() {
         return driver.findElement(createOrderButton).isDisplayed();
     }
 
-    public void clickPersonalText(){
+    public void clickPersonalText() {
         driver.findElement(personalTextLink).click();
     }
 
-    public void clickEnterAccount(){
+    public void clickEnterAccount() {
         driver.findElement(enterAccountButton).click();
     }
 
-    public void clickBuns(){
+    public void clickBuns() {
         driver.findElement(bunsPanel).click();
     }
 
-    public void clickSauces(){
+    public void clickSauces() {
         driver.findElement(saucesPanel).click();
     }
 
-    public void clickFillings(){
+    public void clickFillings() {
         driver.findElement(fillingsPanel).click();
     }
 
-    public boolean bunsSelected(){
+    public boolean bunsSelected() {
         return driver.findElement(bunsPanel).getAttribute("class").contains("current");
     }
 
-    public boolean saucesSelected(){
+    public boolean saucesSelected() {
         return driver.findElement(saucesPanel).getAttribute("class").contains("current");
     }
 
-    public boolean fillingsSelected(){
+    public boolean fillingsSelected() {
         return driver.findElement(fillingsPanel).getAttribute("class").contains("current");
     }
 }

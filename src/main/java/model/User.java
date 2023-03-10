@@ -7,10 +7,10 @@ public class User {
     private String password;
     private String name;
 
-    public static User createRandomUser(){
+    public static User createRandomUser() {
         User user = new User();
         String randomName = RandomStringUtils.randomAlphabetic(10);
-        user.setEmail(randomName.toLowerCase()+"@mail.com");
+        user.setEmail(randomName.toLowerCase() + "@mail.com");
         user.setName(randomName.toLowerCase());
         user.setPassword("12345678");
         return user;
