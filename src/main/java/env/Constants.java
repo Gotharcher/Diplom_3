@@ -5,6 +5,7 @@ public class Constants {
     public final static String REGISTER_URL = "/register";
     public final static String LOGIN_URL = "/login";
     public final static String FORGOT_URL = "/forgot-password";
+    public final static String PERSONAL = "/account/profile";
 
     public final static String API_USER_CREATE = "api/auth/register";
     public final static String API_AUTH_LOGIN = "api/auth/login";

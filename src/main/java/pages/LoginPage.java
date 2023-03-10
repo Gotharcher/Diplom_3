@@ -8,7 +8,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class LoginPage {
 
-
     private final By inputEmail = By.xpath(".//label[text()='Email']/..//input");
     private final By inputPassword = By.xpath(".//label[text()='Пароль']/..//input");
     private final By buttonLogin = By.xpath(".//button[text()='Войти']");
@@ -16,27 +15,27 @@ public class LoginPage {
 
     private final WebDriver driver;
 
-    public LoginPage(WebDriver driver){
+    public LoginPage(WebDriver driver) {
         this.driver = driver;
     }
 
     public void waitLoading() {
-        new WebDriverWait(driver, 10)
-                .until(ExpectedConditions.visibilityOfElementLocated(titleLogin));
+        new WebDriverWait(driver, 10).until(ExpectedConditions.visibilityOfElementLocated(titleLogin));
     }
 
-    public void inputPassword(String text){
+    public void inputPassword(String text) {
         driver.findElement(inputPassword).sendKeys(text);
     }
-    public void inputEmail(String text){
+
+    public void inputEmail(String text) {
         driver.findElement(inputEmail).sendKeys(text);
     }
 
-    public void clickLogin(){
+    public void clickLogin() {
         driver.findElement(buttonLogin).click();
     }
 
-    public void enterCredsAndClickLogin(User user){
+    public void enterCredsAndClickLogin(User user) {
         inputEmail(user.getEmail());
         inputPassword(user.getPassword());
         clickLogin();
