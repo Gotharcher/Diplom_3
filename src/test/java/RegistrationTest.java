@@ -45,7 +45,7 @@ public class RegistrationTest{
         RestAssured.baseURI = Constants.SITE_ADDRESS;
         WebDriverManager.chromedriver().setup();
         if(browserName.equals("yandex")){
-            System.setProperty("webdriver.chrome.driver", Constants.DRIVER_FOLDER + "yandexdriver.exe");
+            System.setProperty("webdriver.chrome.driver", Constants.YABROWSER_PATH);
         }
         driver = new ChromeDriver();
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
