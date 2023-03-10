@@ -11,6 +11,9 @@ public class MainPage {
     private final By createOrderButton = By.xpath(".//button[text()='Оформить заказ']");
     private final By enterAccountButton = By.xpath(".//button[text()='Войти в аккаунт']");
     private final By personalTextLink = By.xpath(".//p[text()='Личный Кабинет']");
+    private final By bunsPanel = By.xpath(".//span[text()='Булки']/..");
+    private final By saucesPanel = By.xpath(".//span[text()='Соусы']/..");
+    private final By fillingsPanel = By.xpath(".//span[text()='Начинки']/..");
 
     private WebDriver driver;
 
@@ -33,5 +36,29 @@ public class MainPage {
 
     public void clickEnterAccount(){
         driver.findElement(enterAccountButton).click();
+    }
+
+    public void clickBuns(){
+        driver.findElement(bunsPanel).click();
+    }
+
+    public void clickSauces(){
+        driver.findElement(saucesPanel).click();
+    }
+
+    public void clickFillings(){
+        driver.findElement(fillingsPanel).click();
+    }
+
+    public boolean bunsSelected(){
+        return driver.findElement(bunsPanel).getAttribute("class").contains("current");
+    }
+
+    public boolean saucesSelected(){
+        return driver.findElement(saucesPanel).getAttribute("class").contains("current");
+    }
+
+    public boolean fillingsSelected(){
+        return driver.findElement(fillingsPanel).getAttribute("class").contains("current");
     }
 }
