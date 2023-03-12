@@ -11,5 +11,5 @@ public class Constants {
     public final static String API_AUTH_LOGIN = "api/auth/login";
     public final static String API_USER_AUTH = "/api/auth/user";
 
-    public final static String YABROWSER_PATH = "C:\\java\\webdrivers\\yandexdriver.exe";
+    public final static String YANDEXDRIVER_PATH = "C:\\yandexdriver.exe";
 }

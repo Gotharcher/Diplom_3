@@ -11,6 +11,7 @@
     <properties>
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <!-- версия Aspectj -->
         <aspectj.version>1.9.7</aspectj.version>
         <!-- версия Allure -->
@@ -58,6 +59,26 @@
             <version>2.8.9</version>
         </dependency>
     </dependencies>
+    <profiles>
+        <profile>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <id>chrome</id>
+            <properties>
+                <browser.type>chrome</browser.type>
+            </properties>
+        </profile>
+        <profile>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <id>yandex</id>
+            <properties>
+                <browser.type>yandex</browser.type>
+            </properties>
+        </profile>
+    </profiles>
     <build>
         <plugins>
             <plugin>
@@ -83,6 +104,9 @@
                             <value>${project.build.directory}/allure-results</value>
                         </property>
                     </systemProperties>
+                    <systemPropertyVariables>
+                        <browser.type>${browser.type}</browser.type>
+                    </systemPropertyVariables>
                 </configuration>
                 <dependencies>
                     <dependency>

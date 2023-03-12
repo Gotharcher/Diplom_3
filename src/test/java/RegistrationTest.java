@@ -1,5 +1,4 @@
 import env.Constants;
-import io.github.bonigarcia.wdm.WebDriverManager;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import model.User;
@@ -17,36 +16,17 @@ import pages.RegistrationPage;
 
 import java.util.concurrent.TimeUnit;
 
-@RunWith(Parameterized.class)
 public class RegistrationTest {
 
-    private final String browserName;
     public WebDriver driver;
     public RegistrationPage registrationPage;
     public String accessToken;
     public LoginPage loginPage;
 
-    public RegistrationTest(String browserName) {
-        this.browserName = browserName;
-    }
-
-    @Parameterized.Parameters
-    public static Object[][] selectBrowser() {
-        return new Object[][]{
-                {"chrome"},
-                {"yandex"},
-        };
-    }
-
     @Before
     public void setUp() {
         RestAssured.baseURI = Constants.SITE_ADDRESS;
-        WebDriverManager.chromedriver().setup();
-        if (browserName.equals("yandex")) {
-            System.setProperty("webdriver.chrome.driver", Constants.YABROWSER_PATH);
-        }
-        driver = new ChromeDriver();
-        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+        driver = SetUpWebDriverEnviroment.setUpDriver();
         registrationPage = new RegistrationPage(driver);
         driver.get(Constants.SITE_ADDRESS + Constants.REGISTER_URL);
         registrationPage.waitLoading();

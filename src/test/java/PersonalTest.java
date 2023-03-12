@@ -20,28 +20,14 @@ import java.util.concurrent.TimeUnit;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
-@RunWith(Parameterized.class)
 public class PersonalTest {
 
     public static String accessToken, refreshToken;
     public static User user;
-    private final String browserName;
     public WebDriver driver;
     public PersonalPage personalPage;
     public MainPage mainPage;
     public LoginPage loginPage;
-
-    public PersonalTest(String browserName) {
-        this.browserName = browserName;
-    }
-
-    @Parameterized.Parameters
-    public static Object[][] selectBrowser() {
-        return new Object[][]{
-                {"chrome"},
-                {"yandex"},
-        };
-    }
 
     @BeforeClass
     public static void beforeClass() {
@@ -59,12 +45,7 @@ public class PersonalTest {
 
     @Before
     public void setUp() {
-        WebDriverManager.chromedriver().setup();
-        if (browserName.equals("yandex")) {
-            System.setProperty("webdriver.chrome.driver", Constants.YABROWSER_PATH);
-        }
-        driver = new ChromeDriver();
-        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+        driver = SetUpWebDriverEnviroment.setUpDriver();
         mainPage = new MainPage(driver);
         personalPage = new PersonalPage(driver);
         loginPage = new LoginPage(driver);

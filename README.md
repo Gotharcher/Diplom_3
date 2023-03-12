@@ -1,3 +1,5 @@
 # Diplom_3
 
-Make sure to set path to Ya.Browser in env.Constant Class before running!
+By default, tests runs with Chrome. To run tests with Ya.Driver browser:
+1. Put yandexdriver to "c:/yandexdriver" OR put path to your ya-driver to Constants.java class
+2. Set mvn parameter to -Pyandex.
